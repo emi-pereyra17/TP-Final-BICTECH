@@ -3,6 +3,8 @@ import ActualizarPassword from "../../components/ActualizarPassword/ActualizarPa
 import EliminarUsuario from "../../components/EliminarUsuario/EliminarUsuario";
 import { AuthContext } from "../../context/AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Perfil = () => {
   const { usuario } = useContext(AuthContext);
   const [compras, setCompras] = useState([]);
@@ -13,7 +15,7 @@ const Perfil = () => {
   useEffect(() => {
     const fetchPedidos = async () => {
       try {
-        const res = await fetch("http://localhost:5087/pedidos", {
+        const res = await fetch(`${API_URL}/pedidos`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

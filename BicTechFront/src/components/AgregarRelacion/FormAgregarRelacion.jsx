@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const FormAgregarRelacion = ({
   categorias = [],
   marcas = [],
@@ -21,7 +23,7 @@ const FormAgregarRelacion = ({
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5087/categoriaMarca", {
+      const res = await fetch(`${API_URL}/categoriaMarca`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

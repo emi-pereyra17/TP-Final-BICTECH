@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const EliminarUsuario = () => {
   const [confirmacion, setConfirmacion] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -8,16 +10,13 @@ const EliminarUsuario = () => {
 
   const eliminarCuenta = async () => {
     try {
-      const respuesta = await fetch(
-        `http://localhost:5087/usuarios/${usuario.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const respuesta = await fetch(`${API_URL}/usuarios/${usuario.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (respuesta.ok) {
         setMensaje("Cuenta eliminada. Redirigiendo...");

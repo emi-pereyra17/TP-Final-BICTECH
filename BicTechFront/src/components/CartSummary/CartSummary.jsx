@@ -4,6 +4,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const CartSummary = ({ items }) => {
   const { carrito, vaciarCarrito } = useContext(CarritoContext);
   const { usuario } = useContext(AuthContext);
@@ -24,14 +26,15 @@ const CartSummary = ({ items }) => {
       toast.error("Debes ingresar una dirección de envío.");
       return;
     }
+    console.log("Items:", items);
     try {
       const productos = items.map((item) => ({
         productoId: item.productoId,
         cantidad: item.cantidad,
-        precio: item.precio ?? item.Producto?.precio ?? 0,
+        precio: item.producto?.precio ?? 0,
       }));
 
-      const res = await fetch("http://localhost:5087/pedidos", {
+      const res = await fetch(`${API_URL}/pedidos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

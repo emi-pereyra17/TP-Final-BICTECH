@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import ValidationsForms from "../Validations/ValidationsForms";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const CardModificarMarca = ({ marca, onClose, onMarcaModificada }) => {
   const [nombre, setNombre] = useState(marca.nombre);
   const [loading, setLoading] = useState(false);
@@ -43,17 +45,14 @@ const CardModificarMarca = ({ marca, onClose, onMarcaModificada }) => {
               toast.dismiss();
               setLoading(true);
               try {
-                const res = await fetch(
-                  `http://localhost:5087/marcas/${marca.id}`,
-                  {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                    body: JSON.stringify({ Nombre: nombre }),
-                  }
-                );
+                const res = await fetch(`${API_URL}/marcas/${marca.id}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                  body: JSON.stringify({ Nombre: nombre }),
+                });
                 if (res.ok) {
                   toast.success("Marca modificada");
                   onMarcaModificada && onMarcaModificada({ ...marca, nombre });

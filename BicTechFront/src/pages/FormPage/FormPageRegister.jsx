@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Register from "../../components/Register/Register";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const FormPageRegister = () => {
   const nombreRef = useRef(null);
   const emailRef = useRef(null);
@@ -26,16 +28,12 @@ const FormPageRegister = () => {
       } else if (errores.repeatPassword && repeatPasswordRef.current) {
         repeatPasswordRef.current.focus();
       }
-
-      //alert("Registro exitoso!");
-      //navigate("/");
-
       setErrores(errores);
     } else {
       setErrores({});
 
       try {
-        const response = await fetch("http://localhost:5087/auth/register", {
+        const response = await fetch(`${API_URL}/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(FormData),

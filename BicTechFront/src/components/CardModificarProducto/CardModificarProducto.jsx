@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ValidationsForms from "../Validations/ValidationsForms";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const CardModificarProducto = ({
   producto,
   marcaSeleccionada,
@@ -56,7 +58,7 @@ const CardModificarProducto = ({
               toast.dismiss();
               try {
                 const response = await fetch(
-                  `http://localhost:5087/productos/${producto.id}`,
+                  `${API_URL}/productos/${producto.id}`,
                   {
                     method: "PUT",
                     headers: {
@@ -271,25 +273,3 @@ const CardModificarProducto = ({
 };
 
 export default CardModificarProducto;
-
-/*
-{usuario && rol == "admin" && (
-              <Button
-              type="button"
-              onClick={handleBtnComprarClick}
-              style={{
-                marginBottom: "10px",
-                backgroundColor: "#FFD700",
-                color: "#000",
-                border: "1px solid #000",
-                fontWeight: "bold",
-                height: "fit-content",
-                fontSize: "1.5rem",
-                padding: "1rem 6rem",
-                borderRadius: "10px",
-              }}
-            >
-              Modificar
-            </Button>
-            )}
-*/

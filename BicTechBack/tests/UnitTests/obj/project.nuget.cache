@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HyM1tEDK7Rs=",
+  "dgSpecHash": "BxvCgPtf5I4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Emi\\Desktop\\Programacion 4 Proyecto\\BicTechBack\\tests\\UnitTests\\BicTechBack.UnitTests.csproj",
+  "projectFilePath": "C:\\Users\\Emi\\Desktop\\TP Proyecto Final BICTECH\\BicTechBack\\tests\\UnitTests\\BicTechBack.UnitTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Emi\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Emi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import ValidationsForms from "../Validations/ValidationsForms";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const FormAgregarProducto = ({
   onClose,
   recargarProductos,
@@ -30,7 +32,7 @@ const FormAgregarProducto = ({
       if (value) {
         try {
           const res = await fetch(
-            `http://localhost:5087/categoriaMarca/categoria/${value}`
+            `${API_URL}/categoriaMarca/categoria/${value}`
           );
           const data = await res.json();
           console.log("Respuesta marcas por categoría:", data);
@@ -58,7 +60,7 @@ const FormAgregarProducto = ({
       return;
     }
     try {
-      const response = await fetch("http://localhost:5087/productos", {
+      const response = await fetch(`${API_URL}/productos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,6 +113,7 @@ const FormAgregarProducto = ({
         marginTop: "0",
       }}
     >
+      {/* ...resto del formulario igual... */}
       <div className="mb-2">
         <label
           className="form-label"

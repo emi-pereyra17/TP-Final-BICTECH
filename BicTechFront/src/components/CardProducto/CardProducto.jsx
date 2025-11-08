@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CarritoContext } from "../../context/CarritoContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function CardProducto({
   producto,
   onVerDetalles,
@@ -57,7 +59,7 @@ function CardProducto({
               toast.dismiss();
               try {
                 const response = await fetch(
-                  `http://localhost:5087/productos/${producto.id}`,
+                  `${API_URL}/productos/${producto.id}`,
                   {
                     method: "DELETE",
                     headers: {

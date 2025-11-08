@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const ActualizarPassword = () => {
   const [nueva, setNueva] = useState("");
   const [confirmar, setConfirmar] = useState("");
@@ -16,11 +18,11 @@ const ActualizarPassword = () => {
     }
 
     try {
-      const respuesta = await fetch(`http://localhost:5087/auth/password/${usuario.id}`, {
+      const respuesta = await fetch(`${API_URL}/auth/password/${usuario.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(nueva),
       });

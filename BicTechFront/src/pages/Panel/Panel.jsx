@@ -11,6 +11,8 @@ import FormAgregarRelacion from "../../components/AgregarRelacion/FormAgregarRel
 import CardUsuario from "../../components/CardUsuario/CardUsuario";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Panel = () => {
   const [marcas, setMarcas] = useState([]);
   const [totalMarcas, setTotalMarcas] = useState(0);
@@ -33,7 +35,7 @@ const Panel = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:5087/categorias/paginado?page=${categoriaPage}&pageSize=${categoriaPageSize}`,
+      `${API_URL}/categorias/paginado?page=${categoriaPage}&pageSize=${categoriaPageSize}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -49,7 +51,7 @@ const Panel = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:5087/marcas/paginado?page=${marcaPage}&pageSize=${marcaPageSize}`,
+      `${API_URL}/marcas/paginado?page=${marcaPage}&pageSize=${marcaPageSize}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -65,7 +67,7 @@ const Panel = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:5087/categoriaMarca/paginado?page=${relacionPage}&pageSize=${relacionPageSize}`,
+      `${API_URL}/categoriaMarca/paginado?page=${relacionPage}&pageSize=${relacionPageSize}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -81,7 +83,7 @@ const Panel = () => {
 
   useEffect(() => {
     fetch(
-      `http://localhost:5087/usuarios/paginado?page=${usuarioPage}&pageSize=${usuarioPageSize}`,
+      `${API_URL}/usuarios/paginado?page=${usuarioPage}&pageSize=${usuarioPageSize}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -114,7 +116,7 @@ const Panel = () => {
               toast.dismiss();
               try {
                 const res = await fetch(
-                  `http://localhost:5087/categorias/${categoria.id}`,
+                  `${API_URL}/categorias/${categoria.id}`,
                   {
                     method: "DELETE",
                     headers: {
@@ -125,7 +127,7 @@ const Panel = () => {
                 if (res.ok) {
                   // Recarga la página actual de categorías
                   fetch(
-                    `http://localhost:5087/categorias/paginado?page=${categoriaPage}&pageSize=${categoriaPageSize}`,
+                    `${API_URL}/categorias/paginado?page=${categoriaPage}&pageSize=${categoriaPageSize}`,
                     {
                       headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -230,18 +232,15 @@ const Panel = () => {
             onClick={async () => {
               toast.dismiss();
               try {
-                const res = await fetch(
-                  `http://localhost:5087/marcas/${marca.id}`,
-                  {
-                    method: "DELETE",
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                  }
-                );
+                const res = await fetch(`${API_URL}/marcas/${marca.id}`, {
+                  method: "DELETE",
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                });
                 if (res.ok) {
                   fetch(
-                    `http://localhost:5087/marcas/paginado?page=${marcaPage}&pageSize=${marcaPageSize}`,
+                    `${API_URL}/marcas/paginado?page=${marcaPage}&pageSize=${marcaPageSize}`,
                     {
                       headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -347,7 +346,7 @@ const Panel = () => {
               toast.dismiss();
               try {
                 const res = await fetch(
-                  `http://localhost:5087/categoriaMarca/${relacion.id}`,
+                  `${API_URL}/categoriaMarca/${relacion.id}`,
                   {
                     method: "DELETE",
                     headers: {
@@ -357,7 +356,7 @@ const Panel = () => {
                 );
                 if (res.ok) {
                   fetch(
-                    `http://localhost:5087/categoriaMarca/paginado?page=${relacionPage}&pageSize=${relacionPageSize}`,
+                    `${API_URL}/categoriaMarca/paginado?page=${relacionPage}&pageSize=${relacionPageSize}`,
                     {
                       headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -424,19 +423,16 @@ const Panel = () => {
             onClick={async () => {
               toast.dismiss();
               try {
-                const res = await fetch(
-                  `http://localhost:5087/usuarios/${usuario.id}`,
-                  {
-                    method: "DELETE",
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                  }
-                );
+                const res = await fetch(`${API_URL}/usuarios/${usuario.id}`, {
+                  method: "DELETE",
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                });
                 const data = await res.json().catch(() => ({}));
                 if (res.ok) {
                   fetch(
-                    `http://localhost:5087/usuarios/paginado?page=${usuarioPage}&pageSize=${usuarioPageSize}`,
+                    `${API_URL}/usuarios/paginado?page=${usuarioPage}&pageSize=${usuarioPageSize}`,
                     {
                       headers: {
                         Authorization: `Bearer ${localStorage.getItem(

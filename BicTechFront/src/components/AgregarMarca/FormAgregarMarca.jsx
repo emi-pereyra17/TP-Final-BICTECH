@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import ValidationsForms from "../Validations/ValidationsForms";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const FormAgregarMarca = ({ onMarcaAgregada }) => {
   const [nombre, setNombre] = useState("");
   const [paisId, setPaisId] = useState("");
@@ -10,7 +12,7 @@ const FormAgregarMarca = ({ onMarcaAgregada }) => {
   const [errores, setErrores] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:5087/paises")
+    fetch(`${API_URL}/paises`)
       .then((res) => res.json())
       .then((data) => setPaises(data.paises || []));
   }, []);
@@ -33,7 +35,7 @@ const FormAgregarMarca = ({ onMarcaAgregada }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5087/marcas", {
+      const res = await fetch(`${API_URL}/marcas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

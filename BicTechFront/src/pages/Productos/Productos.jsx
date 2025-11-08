@@ -7,6 +7,8 @@ import { useFiltro } from "../../context/FiltroContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Productos = () => {
   const [productos, setProductos] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
@@ -23,11 +25,12 @@ const Productos = () => {
 
   useEffect(() => {
     fetchProductos();
+    // eslint-disable-next-line
   }, []);
 
   const fetchProductos = async () => {
     try {
-      const response = await fetch("http://localhost:5087/productos");
+      const response = await fetch(`${API_URL}/productos`);
       const data = await response.json();
       setProductos(Array.isArray(data.productos) ? data.productos : []);
     } catch (error) {
@@ -43,7 +46,7 @@ const Productos = () => {
     precioMin,
     precioMax
   );
- 
+
   const productosFiltrados = productos.filter((producto) => {
     const coincideCategoria = categoriaSeleccionada
       ? Number(producto.categoriaId) === Number(categoriaSeleccionada)

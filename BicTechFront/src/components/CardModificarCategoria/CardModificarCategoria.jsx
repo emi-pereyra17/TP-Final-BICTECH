@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import ValidationsForms from "../Validations/ValidationsForms";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const CardModificarCategoria = ({
   categoria,
   onClose,
@@ -14,7 +16,7 @@ const CardModificarCategoria = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Usar ValidationsForms para validar el nombree
+    // Usar ValidationsForms para validar el nombre
     const erroresVal = ValidationsForms({ nombre }, "categoria");
     if (Object.keys(erroresVal).length > 0) {
       setErrores(erroresVal);
@@ -42,7 +44,7 @@ const CardModificarCategoria = ({
               setLoading(true);
               try {
                 const res = await fetch(
-                  `http://localhost:5087/categorias/${categoria.id}`,
+                  `${API_URL}/categorias/${categoria.id}`,
                   {
                     method: "PUT",
                     headers: {

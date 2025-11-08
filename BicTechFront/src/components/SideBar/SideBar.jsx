@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FiltroContext } from "../../context/FiltroContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const SIDEBAR_WIDTH = 250;
 
 const SideBar = ({ children }) => {
@@ -16,7 +17,7 @@ const SideBar = ({ children }) => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5087/categorias")
+    fetch(`${API_URL}/categorias`)
       .then((res) => res.json())
       .then((data) =>
         setCategorias(Array.isArray(data) ? data : data.categorias || [])
@@ -25,9 +26,7 @@ const SideBar = ({ children }) => {
 
   useEffect(() => {
     if (categoriaSeleccionada) {
-      fetch(
-        `http://localhost:5087/categoriaMarca/categoria/${categoriaSeleccionada}`
-      )
+      fetch(`${API_URL}/categoriaMarca/categoria/${categoriaSeleccionada}`)
         .then((res) => res.json())
         .then((data) =>
           setMarcas(Array.isArray(data.marcas) ? data.marcas : [])
@@ -60,7 +59,6 @@ const SideBar = ({ children }) => {
     (marca) => (marca.id || marca._id) === marcaSeleccionada
   );
 
-  
   const SidebarContent = (
     <ul className="nav flex-column p-3">
       <li className="mb-3">
@@ -201,7 +199,6 @@ const SideBar = ({ children }) => {
         setPrecioMax,
       }}
     >
-      
       <div className="d-md-none p-2 text-end">
         <button
           className="btn btn-outline-light"
@@ -214,7 +211,6 @@ const SideBar = ({ children }) => {
         </button>
       </div>
 
-      
       {windowWidth >= 768 && (
         <div
           className="d-none d-md-block"
@@ -235,7 +231,6 @@ const SideBar = ({ children }) => {
         </div>
       )}
 
-      
       <div
         className="offcanvas offcanvas-start d-md-none"
         tabIndex="-1"
@@ -255,7 +250,6 @@ const SideBar = ({ children }) => {
         </div>
       </div>
 
-      
       <div
         className="main-with-sidebar"
         style={{

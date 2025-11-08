@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function FormPage() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -32,7 +34,7 @@ function FormPage() {
       setErrores({});
       console.log("Antes del fetch");
       try {
-        const response = await fetch("http://localhost:5087/auth/login", {
+        const response = await fetch(`${API_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(FormData),

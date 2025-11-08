@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export const CarritoContext = createContext();
 
 export const CarritoProvider = ({ children }) => {
@@ -10,14 +12,12 @@ export const CarritoProvider = ({ children }) => {
   // Cargar carrito del backend al iniciar sesión
   useEffect(() => {
     if (usuario) {
-      console.log(localStorage.getItem("token"));
-      fetch(`http://localhost:5087/carritos/${usuario.id}`, {
+      fetch(`${API_URL}/carritos/${usuario.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }).then(async (res) => {
         if (!res.ok) {
-          // Opcional: puedes mostrar un mensaje de error aquí
           setCarrito([]);
           return;
         }
@@ -33,7 +33,7 @@ export const CarritoProvider = ({ children }) => {
   const agregarAlCarrito = async (productoId, cantidad = 1) => {
     if (!usuario) return;
     const res = await fetch(
-      `http://localhost:5087/carritos/${usuario.id}/productos/${productoId}/add?cantidad=${cantidad}`,
+      `${API_URL}/carritos/${usuario.id}/productos/${productoId}/add?cantidad=${cantidad}`,
       {
         method: "POST",
         headers: {
@@ -47,7 +47,7 @@ export const CarritoProvider = ({ children }) => {
       throw new Error(errorData.message || "Error al agregar producto");
     }
     // Refresca el carrito
-    const res2 = await fetch(`http://localhost:5087/carritos/${usuario.id}`, {
+    const res2 = await fetch(`${API_URL}/carritos/${usuario.id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -64,7 +64,7 @@ export const CarritoProvider = ({ children }) => {
   const actualizarCantidad = async (productoId, cantidad) => {
     if (!usuario) return;
     const res = await fetch(
-      `http://localhost:5087/carritos/${usuario.id}/productos/${productoId}?cantidad=${cantidad}`,
+      `${API_URL}/carritos/${usuario.id}/productos/${productoId}?cantidad=${cantidad}`,
       {
         method: "PUT",
         headers: {
@@ -77,7 +77,7 @@ export const CarritoProvider = ({ children }) => {
       const errorData = await res.json();
       throw new Error(errorData.message || "Error al actualizar cantidad");
     }
-    const res2 = await fetch(`http://localhost:5087/carritos/${usuario.id}`, {
+    const res2 = await fetch(`${API_URL}/carritos/${usuario.id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -94,7 +94,7 @@ export const CarritoProvider = ({ children }) => {
   const quitarDelCarrito = async (productoId) => {
     if (!usuario) return;
     const res = await fetch(
-      `http://localhost:5087/carritos/${usuario.id}/productos/${productoId}`,
+      `${API_URL}/carritos/${usuario.id}/productos/${productoId}`,
       {
         method: "DELETE",
         headers: {
@@ -106,7 +106,7 @@ export const CarritoProvider = ({ children }) => {
       const errorData = await res.json();
       throw new Error(errorData.message || "Error al quitar producto");
     }
-    const res2 = await fetch(`http://localhost:5087/carritos/${usuario.id}`, {
+    const res2 = await fetch(`${API_URL}/carritos/${usuario.id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -122,7 +122,7 @@ export const CarritoProvider = ({ children }) => {
   // Vaciar carrito
   const vaciarCarrito = async () => {
     if (!usuario) return;
-    const res = await fetch(`http://localhost:5087/carritos/${usuario.id}`, {
+    const res = await fetch(`${API_URL}/carritos/${usuario.id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
