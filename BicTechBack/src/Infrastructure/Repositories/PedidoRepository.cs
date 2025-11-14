@@ -36,6 +36,8 @@ namespace BicTechBack.src.Infrastructure.Repositories
         {
             return await _context.Pedidos
                 .Include(p => p.Usuario)
+                .Include(p => p.PedidosDetalles)
+                    .ThenInclude(pd => pd.Producto)
                 .ToListAsync();
         }
 
@@ -44,6 +46,8 @@ namespace BicTechBack.src.Infrastructure.Repositories
             return await _context.Pedidos
                 .Where(p => p.UsuarioId == clienteId)
                 .Include(p => p.Usuario)
+                .Include(p => p.PedidosDetalles)
+                    .ThenInclude(pd => pd.Producto)
                 .ToListAsync();
         }
 
@@ -51,6 +55,8 @@ namespace BicTechBack.src.Infrastructure.Repositories
         {
             return await _context.Pedidos
                 .Include(p => p.Usuario)
+                .Include(p => p.PedidosDetalles)
+                    .ThenInclude(pd => pd.Producto)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

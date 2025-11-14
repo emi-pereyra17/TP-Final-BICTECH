@@ -9,9 +9,17 @@ import FormAgregarMarca from "../../components/AgregarMarca/FormAgregarMarca";
 import CardCategoriaMarca from "../../components/CardCategoriaMarca/CardCategoriaMarca";
 import FormAgregarRelacion from "../../components/AgregarRelacion/FormAgregarRelacion";
 import CardUsuario from "../../components/CardUsuario/CardUsuario";
+import CardPedido from "../../components/CardPedido/CardPedido";
 import { toast } from "react-toastify";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const ESTADOS_ENUM = [
+  { label: "Pendiente", value: 0 },
+  { label: "Enviado", value: 1 },
+  { label: "Entregado", value: 2 },
+  { label: "Cancelado", value: 3 },
+];
 
 const Panel = () => {
   const [marcas, setMarcas] = useState([]);
@@ -32,6 +40,10 @@ const Panel = () => {
   const [totalUsuarios, setTotalUsuarios] = useState(0);
   const [usuarioPage, setUsuarioPage] = useState(1);
   const [usuarioPageSize, setUsuarioPageSize] = useState(10);
+  const [pedidos, setPedidos] = useState([]);
+  const [totalPedidos, setTotalPedidos] = useState(0);
+  const [pedidoPage, setPedidoPage] = useState(1);
+  const [pedidoPageSize, setPedidoPageSize] = useState(10);
 
   useEffect(() => {
     fetch(
@@ -96,6 +108,23 @@ const Panel = () => {
         setTotalUsuarios(data.total || 0);
       });
   }, [usuarioPage, usuarioPageSize]);
+
+  useEffect(() => {
+    fetch(
+      `${API_URL}/pedidos/paginado?page=${pedidoPage}&pageSize=${pedidoPageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Pedidos:", data.pedidos);
+        setPedidos(data.pedidos || []);
+        setTotalPedidos(data.total || 0);
+      });
+  }, [pedidoPage, pedidoPageSize]);
 
   const handleEliminarCategoria = (categoria) => {
     toast.info(
@@ -327,6 +356,52 @@ const Panel = () => {
     );
   };
 
+  const handleCambiarEstadoPedido = async (pedido, nuevoEstadoLabel) => {
+    const estadoObj = ESTADOS_ENUM.find((e) => e.label === nuevoEstadoLabel);
+    const nuevoEstadoValue = estadoObj ? estadoObj.value : 0;
+
+    try {
+      const res = await fetch(`${API_URL}/pedidos/${pedido.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          ...pedido,
+          estado: nuevoEstadoValue, 
+          usuarioId: pedido.usuarioId,
+          direccionEnvio: pedido.direccionEnvio,
+          productos: pedido.pedidosDetalles?.map((det) => ({
+            productoId: det.productoId,
+            cantidad: det.cantidad,
+            precio: det.precio,
+          })),
+        }),
+      });
+      if (res.ok) {
+        toast.success("Estado actualizado");
+        fetch(
+          `${API_URL}/pedidos/paginado?page=${pedidoPage}&pageSize=${pedidoPageSize}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            setPedidos(data.pedidos || []);
+            setTotalPedidos(data.total || 0);
+          });
+      } else {
+        toast.error("No se pudo actualizar el estado");
+      }
+    } catch {
+      toast.error("Error de conexión al actualizar estado");
+    }
+  };
+
   const handleEliminarRelacion = (relacion) => {
     toast.info(
       <div>
@@ -554,6 +629,90 @@ const Panel = () => {
         <br />
         <br />
 
+        <hr
+          style={{
+            width: "80%",
+            border: "none",
+            borderTop: "2px solid rgb(30, 30, 29)",
+            margin: "2rem auto",
+          }}
+        />
+        <br />
+        <h1
+          style={{
+            fontSize: "2.3rem",
+            fontWeight: "bold",
+            color: "#bfa100",
+            marginBottom: "1.5rem",
+            letterSpacing: "2px",
+            textShadow: "0 2px 8px #ffe066",
+            alignSelf: "center",
+          }}
+        >
+          Pedidos
+        </h1>
+        <h1
+          style={{
+            fontSize: "1.3rem",
+            fontWeight: "bold",
+            color: "#bfa100",
+            marginBottom: "1.5rem",
+            letterSpacing: "2px",
+            textShadow: "0 2px 8pxrgb(230, 190, 27)",
+            alignSelf: "center",
+          }}
+        >
+          Todos los pedidos:
+        </h1>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {pedidos.map((pedido) => (
+            <CardPedido
+              key={pedido.id}
+              pedido={pedido}
+              onCambiarEstado={handleCambiarEstadoPedido}
+            />
+          ))}
+        </div>
+        <div style={{ margin: "1rem 0" }}>
+          <button
+            disabled={pedidoPage === 1}
+            onClick={() => setPedidoPage((prev) => prev - 1)}
+          >
+            Anterior
+          </button>
+          <span style={{ margin: "0 1rem" }}>
+            Página {pedidoPage} de {Math.ceil(totalPedidos / pedidoPageSize)}
+          </span>
+          <button
+            disabled={pedidoPage * pedidoPageSize >= totalPedidos}
+            onClick={() => setPedidoPage((prev) => prev + 1)}
+          >
+            Siguiente
+          </button>
+          <select
+            value={pedidoPageSize}
+            onChange={(e) => {
+              setPedidoPageSize(Number(e.target.value));
+              setPedidoPage(1);
+            }}
+            style={{ marginLeft: "1rem" }}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
+
+        <br />
+        <br />
+        <br />
         <hr
           style={{
             width: "80%",

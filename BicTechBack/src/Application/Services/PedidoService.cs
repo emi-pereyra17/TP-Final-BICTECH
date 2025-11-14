@@ -194,6 +194,7 @@ namespace BicTechBack.src.Core.Services
 
             pedidoExistente.UsuarioId = dto.UsuarioId;
             pedidoExistente.DireccionEnvio = dto.DireccionEnvio;
+            pedidoExistente.Estado = (EstadoPedido)dto.Estado;
             pedidoExistente.PedidosDetalles.Clear();
 
             foreach (var prod in dto.Productos)
