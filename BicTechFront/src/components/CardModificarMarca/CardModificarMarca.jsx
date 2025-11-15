@@ -4,10 +4,11 @@ import ValidationsForms from "../Validations/ValidationsForms";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-const CardModificarMarca = ({ marca, onClose, onMarcaModificada }) => {
+const CardModificarMarca = ({ marca, paises,  onClose, onMarcaModificada }) => {
   const [nombre, setNombre] = useState(marca.nombre);
   const [loading, setLoading] = useState(false);
   const [errores, setErrores] = useState({});
+  const paisId = paises.find(p => p.nombre === marca.pais)?.id; 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,13 +46,16 @@ const CardModificarMarca = ({ marca, onClose, onMarcaModificada }) => {
               toast.dismiss();
               setLoading(true);
               try {
+                console.log("Nombre:", nombre, "PaisId:", marca.paisId);
                 const res = await fetch(`${API_URL}/marcas/${marca.id}`, {
                   method: "PUT",
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                   },
-                  body: JSON.stringify({ Nombre: nombre }),
+                  body: JSON.stringify({ Nombre: nombre,
+                    PaisId: paisId
+                   }),
                 });
                 if (res.ok) {
                   toast.success("Marca modificada");

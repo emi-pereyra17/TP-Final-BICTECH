@@ -55,6 +55,7 @@ const FormAgregarProducto = ({
     if (!form.marcaId) erroresVal.marcaId = "La marca es obligatoria";
     if (!form.categoriaId)
       erroresVal.categoriaId = "La categoría es obligatoria";
+     if (Number(form.precio) <= 0) erroresVal.precio = "El precio debe ser mayor a 0";
     if (Object.keys(erroresVal).length > 0) {
       setErrores(erroresVal);
       return;

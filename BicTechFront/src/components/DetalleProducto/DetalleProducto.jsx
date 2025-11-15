@@ -47,23 +47,50 @@ const DetalleProducto = ({
           </p>
           <div className="precio-comprar-container">
             <h2 className="precio">Precio: ${producto.precio}</h2>
-            <Button
-              type="button"
-              onClick={handleBtnComprarClick}
-              style={{
-                marginBottom: "10px",
-                backgroundColor: "#FFD700",
-                color: "#000",
-                border: "1px solid #000",
-                fontWeight: "bold",
-                height: "fit-content",
-                fontSize: "1.5rem",
-                padding: "1rem 6rem",
-                borderRadius: "10px",
-              }}
-            >
-              Comprar +
-            </Button>
+            {producto.stock <= 0 ? (
+              <div
+                style={{
+                  background:
+                    "linear-gradient(90deg, #ff1744 0%, #ff616f 100%)",
+                  color: "#fff",
+                  padding: "0.5rem 1.2rem",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  fontSize: "1.1rem",
+                  marginTop: "12px",
+                  marginBottom: "12px",
+                  textAlign: "center",
+                  boxShadow: "0 2px 8px rgba(255,23,68,0.18)",
+                  border: "2px solid #fff",
+                  letterSpacing: "1px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  textShadow: "1px 1px 4px #b71c1c",
+                }}
+              >
+                <span style={{ fontSize: "1.3rem" }}>⚠️</span>
+                Sin stock
+              </div>
+            ) : (
+              <Button
+                type="button"
+                onClick={handleBtnComprarClick}
+                style={{
+                  marginBottom: "10px",
+                  backgroundColor: "#FFD700",
+                  color: "#000",
+                  border: "1px solid #000",
+                  fontWeight: "bold",
+                  height: "fit-content",
+                  fontSize: "1.5rem",
+                  padding: "1rem 6rem",
+                  borderRadius: "10px",
+                }}
+              >
+                Comprar +
+              </Button>
+            )}
           </div>
         </div>
       </div>

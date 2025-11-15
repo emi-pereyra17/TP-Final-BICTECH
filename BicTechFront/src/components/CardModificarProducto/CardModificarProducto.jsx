@@ -24,6 +24,8 @@ const CardModificarProducto = ({
     descripcion: producto?.descripcion || "",
     stock: producto?.stock || "",
     imagenUrl: producto?.imagenUrl || "",
+    categoriaId: producto?.categoriaId || "",
+    marcaId: producto?.marcaId || "",
   });
 
   const [errores, setErrores] = useState({});
@@ -71,6 +73,8 @@ const CardModificarProducto = ({
                       Descripcion: form.descripcion,
                       Stock: form.stock,
                       ImagenUrl: form.imagenUrl,
+                      CategoriaId: Number(form.categoriaId),
+                      MarcaId: Number(form.marcaId),
                     }),
                   }
                 );
@@ -228,7 +232,7 @@ const CardModificarProducto = ({
               {errores.imagenUrl && (
                 <p style={{ color: "red" }}>{errores.imagenUrl}</p>
               )}
-            </div>
+            </div>           
             <div className="d-flex gap-2 mt-3">
               <Button
                 type="submit"

@@ -27,9 +27,6 @@ function CardProducto({
   const { usuario, rol } = useContext(AuthContext);
   const { agregarAlCarrito } = useContext(CarritoContext);
 
-  console.log("ROL EN CARDPRODUCTO:", rol);
-  console.log("Producto en CardProducto:", producto);
-
   const handleBtnComprarClick = async (e) => {
     if (!usuario) {
       e.preventDefault();
@@ -99,7 +96,7 @@ function CardProducto({
       { autoClose: false }
     );
   };
-  console.log(usuario, rol);
+
   return (
     <Card
       style={{
@@ -166,6 +163,30 @@ function CardProducto({
           </div>
         </div>
         <div className="d-flex justify-content-center gap-2 mt-3 mb-2">
+          {producto.stock <= 0 && (
+            <div
+              style={{
+                background: "linear-gradient(90deg, #ff1744 0%, #ff616f 100%)",
+                color: "#fff",
+                padding: "0.25rem 0.7rem",
+                borderRadius: "6px",
+                fontWeight: "bold",
+                fontSize: "0.95rem",
+                marginBottom: "0.5rem",
+                alignSelf: "center",
+                boxShadow: "0 1px 4px rgba(255,23,68,0.13)",
+                border: "1.5px solid #fff",
+                letterSpacing: "0.5px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                textShadow: "1px 1px 2px #b71c1c",
+              }}
+            >
+              <span style={{ fontSize: "1.1rem" }}>⚠️</span>
+              Sin stock
+            </div>
+          )}
           {rol?.toLowerCase() === "admin" && (
             <Button
               type="button"
@@ -194,7 +215,7 @@ function CardProducto({
               Eliminar
             </Button>
           )}
-          {usuario && rol?.toLowerCase() !== "admin" && (
+          {usuario && rol?.toLowerCase() !== "admin" && producto.stock > 0 && (
             <Button
               type="button"
               onClick={handleBtnComprarClick}

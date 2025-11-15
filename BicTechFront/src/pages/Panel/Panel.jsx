@@ -44,7 +44,19 @@ const Panel = () => {
   const [totalPedidos, setTotalPedidos] = useState(0);
   const [pedidoPage, setPedidoPage] = useState(1);
   const [pedidoPageSize, setPedidoPageSize] = useState(10);
+  const [paises, setPaises] = useState([]);
 
+  useEffect(() => {
+    fetch(`${API_URL}/paises`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPaises(data.paises || []);
+      });
+  }, []);
   useEffect(() => {
     fetch(
       `${API_URL}/categorias/paginado?page=${categoriaPage}&pageSize=${categoriaPageSize}`,
@@ -369,7 +381,7 @@ const Panel = () => {
         },
         body: JSON.stringify({
           ...pedido,
-          estado: nuevoEstadoValue, 
+          estado: nuevoEstadoValue,
           usuarioId: pedido.usuarioId,
           direccionEnvio: pedido.direccionEnvio,
           productos: pedido.pedidosDetalles?.map((det) => ({
@@ -571,6 +583,7 @@ const Panel = () => {
       {marcaAModificar && (
         <CardModificarMarca
           marca={marcaAModificar}
+          paises={paises}
           onClose={() => setMarcaAModificar(null)}
           onMarcaModificada={(marcaActualizada) => {
             setMarcas((prev) =>
