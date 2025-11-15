@@ -94,8 +94,8 @@ namespace BicTechBack.IntegrationTests.Services
             Assert.NotNull(result);
             Assert.Equal(usuario.Id, result.UsuarioId);
             Assert.Equal(200, result.Total);
-            Assert.Single(result.Productos);
-            Assert.Equal(producto.Id, result.Productos[0].ProductoId);
+            Assert.Single(result.PedidosDetalles);
+            Assert.Equal(producto.Id, result.PedidosDetalles[0].ProductoId);
 
             var productoEnDb = await context.Productos.FindAsync(producto.Id);
             Assert.Equal(8, productoEnDb.Stock); // Stock descontado
@@ -230,7 +230,7 @@ namespace BicTechBack.IntegrationTests.Services
             var result = await service.AgregarProductoAlPedidoAsync(dto);
 
             Assert.NotNull(result);
-            Assert.Equal(3, result.Productos[0].Cantidad);
+            Assert.Equal(3, result.PedidosDetalles[0].Cantidad);
             Assert.Equal(300, result.Total);
         }
 
@@ -387,7 +387,7 @@ namespace BicTechBack.IntegrationTests.Services
 
             Assert.NotNull(result);
             Assert.Equal("Nueva Direccion", result.DireccionEnvio);
-            Assert.Single(result.Productos);
+            Assert.Single(result.PedidosDetalles);
             Assert.Equal(100, result.Total);
         }
 
